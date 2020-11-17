@@ -1,5 +1,6 @@
 import { UserDevices, VideoType } from "../../utils/types";
 import {
+  STREAM_SET,
   SET_AUDIO_TRACK,
   SET_AUDIO_DEVICES,
   SET_VIDEO_TRACK,
@@ -8,6 +9,10 @@ import {
   RELEASE_VIDEO,
   TOGGLE_MUTED,
 } from "./types";
+
+export const setStream = () => ({
+  type: STREAM_SET
+})
 
 export const setAudioTrack = (track: MediaStreamTrack, deviceId: string) => ({
   type: SET_AUDIO_TRACK,

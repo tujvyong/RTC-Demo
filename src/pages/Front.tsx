@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import { Container, Typography, Grid, TextField } from '@material-ui/core'
+import { useSelector } from 'react-redux'
+import { RootStore } from '../store'
 
 interface Props {
 

@@ -4,3 +4,9 @@ export interface UserDevices {
 }
 
 export type VideoType = "camera" | "display" | null;
+
+export interface MediaConfig {
+  video: boolean
+  mic: boolean
+  settings: boolean
+}

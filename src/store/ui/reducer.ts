@@ -8,7 +8,6 @@ import {
 const initialState = {
   error: null,
   backdrop: false,
-  // search: null
 }
 
 export default function uiReducer(state = initialState, action: UIActionTypes): UIStore {

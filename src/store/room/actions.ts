@@ -3,7 +3,7 @@ import {
   ADD_STREAM,
   LOAD,
   REMOVE_STREAM,
-  RoomStat,
+  // RoomStat,
   SET_ROOM_STAT
 } from "./types";
 
@@ -23,7 +23,7 @@ export const removeStream = (peerId: string) => ({
   payload: peerId
 })
 
-export const setRoomStat = (src: string, stat: RoomStat) => ({
-  type: SET_ROOM_STAT,
-  payload: { src, stat }
-})
+// export const setRoomStat = (src: string, stat: RoomStat) => ({
+//   type: SET_ROOM_STAT,
+//   payload: { src, stat }
+// })

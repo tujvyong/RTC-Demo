@@ -16,6 +16,7 @@ import {
 const initialState = {
   peer: null,
   isReady: false,
+  isJoined: false,
   room: null,
   mode: null,
   id: null,
@@ -57,11 +58,11 @@ export default function roomReducer(state = initialState, action: RoomActionType
       state.stats.delete(peerId)
       return state
     }
-    case SET_ROOM_STAT: {
-      const { src, stat } = action.payload
-      state.stats.set(src, stat)
-      return state
-    }
+    // case SET_ROOM_STAT: {
+    //   const { src, stat } = action.payload
+    //   state.stats.set(src, stat)
+    //   return state
+    // }
     // case CLEAN_UP_ROOM: {
     //   state.remoteStream.getTracks().forEach(track => track.stop())
     //   return { ...state, currentRoom: null, chatRoom: null, remoteStream: new MediaStream() }

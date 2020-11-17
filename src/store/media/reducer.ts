@@ -29,25 +29,25 @@ const initialState: MediaStore = {
 
 export default function mediaReducer(state = initialState, action: MediaActionTypes) {
   switch (action.type) {
-    // case STREAM_SET: {
-    //   const stream = new MediaStream()
-    //   if (state.audioTrack instanceof MediaStreamTrack) {
-    //     stream.addTrack(state.audioTrack)
-    //     state.audioTrack.enabled = !state.isAudioTrackMuted
-    //   }
-    //   if (state.videoTrack instanceof MediaStreamTrack) {
-    //     stream.addTrack(state.videoTrack)
-    //     state.videoTrack.enabled = !state.isVideoTrackMuted
-    //   }
-    //   return { ...state, stream: stream }
-    // }
+    case STREAM_SET: {
+      const stream = new MediaStream()
+      if (state.audioTrack instanceof MediaStreamTrack) {
+        stream.addTrack(state.audioTrack)
+        state.audioTrack.enabled = !state.isAudioTrackMuted
+      }
+      if (state.videoTrack instanceof MediaStreamTrack) {
+        stream.addTrack(state.videoTrack)
+        state.videoTrack.enabled = !state.isVideoTrackMuted
+      }
+      return { ...state, stream: stream }
+    }
     case SET_VIDEO_TRACK: {
-      const device = action.payload
-      return { ...state, videoTrack: device.track, videoType: device.type, videoDeviceId: device.id }
+      const { track, type, deviceId } = action.payload
+      return { ...state, videoTrack: track, videoType: type, videoDeviceId: deviceId }
     }
     case SET_AUDIO_TRACK: {
-      const device = action.payload
-      return { ...state, audioTrack: device.track, audioDeviceId: device.id }
+      const { track, deviceId } = action.payload
+      return { ...state, audioTrack: track, audioDeviceId: deviceId }
     }
     // case DELETE_VIDEO_TRACK: {
     //   // ビデオの機能をなくしたいときに使う

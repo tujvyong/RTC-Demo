@@ -1,103 +1,42 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { SfuRoom, RoomStream } from "skyway-js";
+import { SfuRoom, RoomStream } from "skyway-js"
 import { useDispatch } from 'react-redux'
-import { useSelector } from "react-redux";
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
+import { useSelector } from "react-redux"
 import { initPeer } from "../utils/skyway";
-import { getUserDevices, getUserAudioTrack, getUserVideoTrack } from "../utils/webrtc";
-import { isiOS, isChrome } from "../utils/config";
-import { handleError } from "../store/ui/actions";
+import { handleError } from "../store/ui/actions"
 import { RootStore } from "../store";
-import {
-  setAudioTrack,
-  setAudioDevices,
-  setVideoTrack,
-  setVideoDevices,
-  releaseVideoDevice,
-} from "../store/media/actions";
+import { MediaConfig } from "../utils/types";
 import {
   load,
   addStream,
   removeStream,
-  setRoomStat,
+  // setRoomStat,
 } from "../store/room/actions";
-import { RoomStat } from "../store/room/types"
+// import { RoomStat } from "../store/room/types"
 import { useParams } from 'react-router-dom';
+import Entrance from '../components/Entrance';
+import Bootstrap from './Bootstrap';
+import Loading from "../components/Loading";
 
 interface Props {
 
 }
 
 const RTCsettings: React.FC<Props> = () => {
-  const classes = useStyles()
   const { roomName } = useParams<{ roomName: string }>()
+
   const dispatch = useDispatch()
+  const [configs, setConfigs] = useState<MediaConfig>({
+    video: true,
+    mic: true,
+    settings: false
+  })
   const { room, media, ui } = useSelector((state: RootStore) => state)
-
-  const enableUserAudio = async () => {
-    if (isiOS() && isChrome()) {
-      throw dispatch(handleError(new Error("このブラウザをサポートしていません。Safariを使用してみてください。")))
-    }
-
-    const { audioInDevices } = await getUserDevices({
-      audio: true,
-    }).catch((err) => {
-      throw dispatch(handleError(err));
-    })
-
-    if (audioInDevices === null) {
-      throw dispatch(handleError(new Error("お使いの端末はマイクをご利用できません。別の端末でお試しください")))
-    }
-    if (audioInDevices.length === 0) {
-      throw dispatch(handleError(new Error("少なくとも１つのオーディオデバイスが必要です")))
-    }
-
-    const [{ deviceId }] = audioInDevices
-    const audioTrack = await getUserAudioTrack(deviceId).catch((err) => {
-      throw dispatch(handleError(err))
-    })
-    dispatch(setAudioTrack(audioTrack, deviceId))
-
-    const devices = await getUserDevices({ video: true, audio: true }).catch((err) => {
-      throw dispatch(handleError(err))
-    })
-    dispatch(setAudioDevices(devices))
-  }
-
-  const enableUserVideo = async () => {
-    if (isiOS() && isChrome()) {
-      throw dispatch(handleError(new Error("このブラウザをサポートしていません。Safariを使用してみてください。")))
-    }
-
-    const { videoInDevices } = await getUserDevices({ video: true }).catch(err => {
-      throw dispatch(handleError(err))
-    })
-
-    // must not be happend
-    if (videoInDevices === null) {
-      throw dispatch(handleError(new Error("お使いの端末はカメラをご利用できません。別の端末でお試しください")))
-    }
-    if (videoInDevices.length === 0) {
-      throw dispatch(handleError(new Error("少なくとも１つのカメラデバイスが必要です")))
-    }
-
-    const [{ deviceId }] = videoInDevices
-    const videoTrack = await getUserVideoTrack(deviceId).catch(err => {
-      throw dispatch(handleError(err))
-    })
-    dispatch(releaseVideoDevice())
-    dispatch(setVideoTrack(videoTrack, "camera", deviceId))
-
-    const devices = await getUserDevices({ video: true }).catch(err => {
-      throw dispatch(handleError(err))
-    })
-    dispatch(setVideoDevices(devices))
-  }
 
   const onCallRoom = useCallback(() => {
     if (room.peer === null) {
       dispatch(handleError(new Error("Peer is not created")))
-      return false
+      return
     }
     const currentRoom = room.peer.joinRoom<SfuRoom>(roomName, {
       mode: 'sfu',
@@ -114,27 +53,27 @@ const RTCsettings: React.FC<Props> = () => {
       // })
     })
     currentRoom.on('peerLeave', (peerId: string) => {
-      const stat = room.stats.get(peerId)
-      if (stat) {
-        console.log(stat.displayName)
-      }
+      // const stat = room.stats.get(peerId)
+      // if (stat) {
+      //   console.log(stat.displayName)
+      // }
       dispatch(removeStream(peerId))
     })
-    currentRoom.on('data', ({ src, data }) => {
-      const { type, payload } = data
-      switch (type) {
-        case 'stat':
-          const stat = payload as RoomStat
-          if (!room.stats.get(src)) {
+    // currentRoom.on('data', ({ src, data }) => {
+    //   const { type, payload } = data
+    //   switch (type) {
+    //     case 'stat':
+    //       const stat = payload as RoomStat
+    //       if (!room.stats.get(src)) {
 
-          }
-          dispatch(setRoomStat(src, stat))
-          break;
-        default:
-          console.log("through default ...")
-          break;
-      }
-    })
+    //       }
+    //       dispatch(setRoomStat(src, stat))
+    //       break;
+    //     default:
+    //       console.log("through default ...")
+    //       break;
+    //   }
+    // })
   }, [dispatch])
 
   const getPeer = useCallback(async () => {
@@ -148,16 +87,32 @@ const RTCsettings: React.FC<Props> = () => {
     dispatch(load(peer))
   }, [dispatch])
 
+  useEffect(() => {
+    getPeer()
+  }, [])
+
+  let content
+  if (!room.isReady || media.audioInDevices.length === 0 || media.videoInDevices.length === 0) {
+    content = (<Loading />)
+  } else {
+    if (room.isJoined) {
+      // content = (<Room />)
+    } else {
+      content = (
+        <Entrance
+          configs={configs}
+          setConfigs={setConfigs}
+          onCallRoom={onCallRoom}
+        />
+      )
+    }
+  }
+
   return (
-    <>
-    </>
+    <Bootstrap>
+      {content}
+    </Bootstrap>
   )
 }
 
 export default RTCsettings
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-
-  })
-)

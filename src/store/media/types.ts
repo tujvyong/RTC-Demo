@@ -1,6 +1,7 @@
 import { VideoType, UserDevices } from "../../utils/types";
 
 export const STREAM_SET = 'STREAM_SET'
+export const SET_STAT = 'SET_STAT'
 export const SET_VIDEO_TRACK = 'SET_VIDEO_TRACK'
 export const SET_AUDIO_TRACK = 'SET_AUDIO_TRACK'
 export const DELETE_VIDEO_TRACK = 'DELETE_VIDEO_TRACK'
@@ -22,6 +23,10 @@ export interface MediaStore {
   videoType: VideoType,
   audioTrack: MediaStreamTrack | null,
   videoTrack: MediaStreamTrack | null,
+}
+
+interface SetStream {
+  type: typeof STREAM_SET
 }
 
 interface SetAudioTrack {
