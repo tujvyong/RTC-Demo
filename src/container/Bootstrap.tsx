@@ -81,7 +81,7 @@ const Bootstrap: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     enableUserAudio()
     enableUserVideo()
-  })
+  }, [])
 
   return (
     <>

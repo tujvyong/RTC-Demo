@@ -14,7 +14,7 @@ import {
 } from "../store/room/actions";
 // import { RoomStat } from "../store/room/types"
 import { useParams } from 'react-router-dom';
-import Entrance from '../components/Entrance';
+import Entrance from '../pages/Entrance';
 import Bootstrap from './Bootstrap';
 import Loading from "../components/Loading";
 

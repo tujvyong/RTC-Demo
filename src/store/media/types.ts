@@ -62,4 +62,4 @@ interface ToggleMuted {
   payload: MediaStreamTrack["kind"]
 }
 
-export type MediaActionTypes = SetAudioTrack | SetAudioDevices | SetVideoTrack | SetVideoDevices | ReleaseAudio | ReleaseVideo | ToggleMuted
+export type MediaActionTypes = SetStream | SetAudioTrack | SetAudioDevices | SetVideoTrack | SetVideoDevices | ReleaseAudio | ReleaseVideo | ToggleMuted

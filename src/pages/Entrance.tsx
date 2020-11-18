@@ -10,7 +10,7 @@ import MicIcon from '@material-ui/icons/Mic';
 import { MediaConfig } from "../utils/types";
 import SettingsIcon from '@material-ui/icons/Settings';
 import { toggleMuted } from '../store/media/actions'
-import LocalStream from './LocalStream'
+import LocalStream from '../components/LocalStream'
 // import SettingsDialog from './settings-dialog'
 import { RootStore } from '../store';
 

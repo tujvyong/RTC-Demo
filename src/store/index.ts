@@ -1,5 +1,6 @@
-import { createStore } from 'redux'
-import { combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import createSagaMiddleware from 'redux-saga';
+import { rootSaga } from '../sagas'
 import mediaReducer from './media/reducer'
 import roomReducer from './room/reducer'
 import uiReducer from './ui/reducer'
@@ -14,6 +15,9 @@ export type RootStore = {
   ui: UIStore
 }
 
+const sagaMiddleware = createSagaMiddleware()
+
+
 const rootReducer = combineReducers({
   media: mediaReducer,
   room: roomReducer,
@@ -22,6 +26,8 @@ const rootReducer = combineReducers({
 
 const store = createStore(
   rootReducer,
+  applyMiddleware(sagaMiddleware)
 )
+sagaMiddleware.run(rootSaga)
 
 export default store
