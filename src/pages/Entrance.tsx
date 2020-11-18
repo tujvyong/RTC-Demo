@@ -1,18 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Container, Grid, Paper, Button, Tooltip, Typography } from '@material-ui/core'
+import { Container, Grid, Button, Typography } from '@material-ui/core'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import VideocamIcon from '@material-ui/icons/Videocam';
-import VideocamOffOutlinedIcon from '@material-ui/icons/VideocamOffOutlined';
-import MicOffIcon from '@material-ui/icons/MicOff';
-import MicIcon from '@material-ui/icons/Mic';
+import { RootStore } from '../store';
 import { MediaConfig } from "../utils/types";
-import SettingsIcon from '@material-ui/icons/Settings';
 import { toggleMuted } from '../store/media/actions'
 import LocalStream from '../components/LocalStream'
-// import SettingsDialog from './settings-dialog'
-import { RootStore } from '../store';
+import ToggleBtn from '../components/ToggleBtn'
+import Settings from '../components/Settings'
 
 
 interface Props {
@@ -26,24 +21,20 @@ const Entrance: React.FC<Props> = ({
   setConfigs,
   onCallRoom,
 }) => {
-  const { room } = useSelector((state: RootStore) => state)
+  const { room, media } = useSelector((state: RootStore) => state)
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const cam = configs.video ? <VideocamIcon /> : <VideocamOffOutlinedIcon />
-  const mic = configs.mic ? <MicIcon /> : <MicOffIcon />
   const camText = configs.video ? 'On' : 'Off'
   const micText = configs.mic ? 'On' : 'Off'
 
   const toggleVideo = () => {
     setConfigs({ ...configs, video: !configs.video })
-    // setConfText({ ...confText, video: !confText.video })
     dispatch(toggleMuted('video'))
   }
 
   const toggleMic = () => {
     setConfigs({ ...configs, mic: !configs.mic })
-    // setConfText({ ...confText, mic: !confText.mic })
     dispatch(toggleMuted('audio'))
   }
 
@@ -60,33 +51,27 @@ const Entrance: React.FC<Props> = ({
       <LocalStream displayCss="entrance" />
 
       <Grid container justify="space-around" className={classes.roomConfigs} >
-        <Tooltip title="カメラ オン/オフ">
-          <ToggleButton
-            classes={{ root: classes.rootToggle, selected: classes.selectedToggle }}
-            value="check"
-            selected={configs.video}
-            onChange={toggleVideo}>
-            {cam}
-          </ToggleButton>
-        </Tooltip>
-        <Tooltip title="マイク オン/オフ">
-          <ToggleButton
-            classes={{ root: classes.rootToggle, selected: classes.selectedToggle }}
-            value="check"
-            selected={configs.mic}
-            onChange={toggleMic}>
-            {mic}
-          </ToggleButton>
-        </Tooltip>
-        <Tooltip title="設定">
-          <ToggleButton
-            classes={{ root: classes.rootToggle, selected: classes.selectedToggle }}
-            value="check"
-            selected={true}
-            onChange={() => setConfigs({ ...configs, settings: true })}>
-            <SettingsIcon />
-          </ToggleButton>
-        </Tooltip>
+        <ToggleBtn
+          title="カメラ オン/オフ"
+          selected={configs.video}
+          icon={configs.video ? "VideocamIcon" : "VideocamOffOutlinedIcon"}
+          event="change"
+          fn={toggleVideo}
+        />
+        <ToggleBtn
+          title="マイク オン/オフ"
+          selected={configs.mic}
+          icon={configs.mic ? "MicIcon" : "MicOffIcon"}
+          event="change"
+          fn={toggleMic}
+        />
+        <ToggleBtn
+          title="設定"
+          selected={true}
+          icon={"SettingsIcon"}
+          event="change"
+          fn={() => setConfigs({ ...configs, settings: true })}
+        />
       </Grid>
 
       <Typography className={classes.configText}>
@@ -98,7 +83,7 @@ const Entrance: React.FC<Props> = ({
         <Button color="secondary" variant="outlined" fullWidth className={classes.button} href="/" >ホームへ戻る</Button>
       </div>
 
-      {/* <SettingsDialog classes={classes} configs={configs} setConfigs={setConfigs} /> */}
+      <Settings media={media} configs={configs} setConfigs={setConfigs} />
     </Container>
   )
 }
@@ -109,21 +94,6 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     containerWrapper: {
       paddingTop: theme.spacing(3),
-    },
-    rootToggle: {
-      backgroundColor: '#f26b4d !important',
-      '&:hover': {
-        backgroundColor: '#c35037 !important',
-      },
-      '& svg': {
-        color: '#fff',
-      },
-    },
-    selectedToggle: {
-      backgroundColor: `rgba(76, 76, 18, 0.6) !important`,
-      '&:hover': {
-        backgroundColor: `rgba(76, 76, 18, 0.8) !important`,
-      },
     },
     roomConfigs: {
       // for window resize

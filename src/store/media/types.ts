@@ -14,8 +14,8 @@ export const CLEAN_UP_MEDIA = 'CLEAN_UP_MEDIA'
 
 export interface MediaStore {
   stream: MediaStream,
-  audioInDevices: MediaDeviceInfo[] | [],
-  videoInDevices: MediaDeviceInfo[] | [],
+  audioInDevices: MediaDeviceInfo[],
+  videoInDevices: MediaDeviceInfo[],
   audioDeviceId: string | null,
   videoDeviceId: string | null,
   isVideoTrackMuted: boolean,
