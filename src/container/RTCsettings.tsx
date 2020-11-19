@@ -11,6 +11,7 @@ import {
   joinedRoom,
   addStream,
   removeStream,
+  cleanUpRoom,
   // setRoomStat,
 } from "../store/room/actions";
 // import { RoomStat } from "../store/room/types"
@@ -78,6 +79,14 @@ const RTCsettings: React.FC<Props> = () => {
     //       break;
     //   }
     // })
+    currentRoom.once('close', () => {
+      try {
+        currentRoom.removeAllListeners();
+        dispatch(cleanUpRoom())
+      } catch (err) {
+        dispatch(handleError(err))
+      }
+    })
   }, [dispatch, room, media, roomName])
 
   const getPeer = useCallback(async () => {

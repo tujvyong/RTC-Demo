@@ -10,6 +10,7 @@ import LocalStream from '../components/LocalStream'
 import RemoteStream from '../components/RemoteStream'
 import Settings from '../components/Settings'
 import ToggleBtn from "../components/ToggleBtn";
+import { useHistory } from 'react-router-dom';
 
 
 interface Props {
@@ -37,6 +38,7 @@ const Room: React.FC<Props> = ({
   // exitRoom,
 }) => {
   const classes = useStyles()
+  let history = useHistory()
   const [windowSize, setWindowSize] = useState({
     // width: window.innerWidth,
     height: window.innerHeight
@@ -64,6 +66,13 @@ const Room: React.FC<Props> = ({
 
   const touchInOut = () => {
     setTouch(!touch)
+  }
+
+  const exitRoom = () => {
+    if (room.room) {
+      room.room.close()
+    }
+    window.location.href = "/"
   }
 
   useEffect(() => {
@@ -121,8 +130,8 @@ const Room: React.FC<Props> = ({
               title="退出"
               selected={true}
               icon={"CallEndIcon"}
-            // event="click"
-            // fn={exitRoom)}
+              event="click"
+              fn={exitRoom}
             />
           </Grid>
         </Grid>

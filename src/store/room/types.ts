@@ -39,7 +39,7 @@ export interface RoomStore {
   id: RoomInit["id"] | null;
   useH264: RoomInit["useH264"];
   streams: Map<string, RoomStream>;
-  castRequestCount: number;
+  // castRequestCount: number;
   // stats: Map<string, RoomStat>
   // chats: IObservableArray<RoomChat>;
   // myLastChat: RoomChat | null;
@@ -73,4 +73,8 @@ interface RemoveStream {
 //   payload: { src: string, stat: RoomStat }
 // }
 
-export type RoomActionTypes = Load | JoinedRoom | AddStream | RemoveStream
+interface CleanUpRoom {
+  type: typeof CLEAN_UP_ROOM
+}
+
+export type RoomActionTypes = Load | JoinedRoom | AddStream | RemoveStream | CleanUpRoom

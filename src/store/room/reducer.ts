@@ -11,9 +11,10 @@ import {
   CLEAN_UP_ROOM,
   RoomActionTypes,
   SET_ROOM_STAT,
+  RoomStore,
 } from "./types"
 
-const initialState = {
+const initialState: RoomStore = {
   peer: null,
   isReady: false,
   isJoined: false,
@@ -22,8 +23,8 @@ const initialState = {
   id: null,
   useH264: false,
   streams: new Map(),
-  castRequestCount: new Map(),
-  stats: new Map(),
+  // castRequestCount: new Map(),
+  // stats: new Map(),
 }
 
 export default function roomReducer(state = initialState, action: RoomActionTypes) {
@@ -55,7 +56,7 @@ export default function roomReducer(state = initialState, action: RoomActionType
     case REMOVE_STREAM: {
       const peerId = action.payload
       state.streams.delete(peerId)
-      state.stats.delete(peerId)
+      // state.stats.delete(peerId)
       return state
     }
     // case SET_ROOM_STAT: {
@@ -63,10 +64,22 @@ export default function roomReducer(state = initialState, action: RoomActionType
     //   state.stats.set(src, stat)
     //   return state
     // }
-    // case CLEAN_UP_ROOM: {
-    //   state.remoteStream.getTracks().forEach(track => track.stop())
-    //   return { ...state, currentRoom: null, chatRoom: null, remoteStream: new MediaStream() }
-    // }
+    case CLEAN_UP_ROOM: {
+      state.streams.forEach((stream) =>
+        stream.getTracks().forEach((track) => track.stop())
+      )
+      state.streams.clear()
+      return {
+        ...state,
+        peer: null,
+        isReady: false,
+        isJoined: false,
+        room: null,
+        mode: null,
+        id: null,
+        useH264: false,
+      }
+    }
     default:
       return state
   }

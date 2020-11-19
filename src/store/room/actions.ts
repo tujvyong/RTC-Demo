@@ -1,6 +1,7 @@
 import Peer, { RoomStream, SfuRoom } from "skyway-js";
 import {
   ADD_STREAM,
+  CLEAN_UP_ROOM,
   JOINED_ROOM,
   LOAD,
   REMOVE_STREAM,
@@ -33,3 +34,7 @@ export const removeStream = (peerId: string) => ({
 //   type: SET_ROOM_STAT,
 //   payload: { src, stat }
 // })
+
+export const cleanUpRoom = () => ({
+  type: CLEAN_UP_ROOM
+})
