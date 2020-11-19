@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { RootStore } from '../store'
@@ -11,12 +11,6 @@ interface Props {
 const LocalStream: React.FC<Props> = ({ displayCss }) => {
   const classes = useStyles()
   const { stream, videoType } = useSelector((state: RootStore) => state.media)
-  // const [isActive, setIsActive] = useState(false)
-  // useEffect(() => {
-  //   if (stream.getVideoTracks().length !== 0) {
-  //     setIsActive(stream.getVideoTracks()[0].enabled)
-  //   }
-  // }, [stream])
   let style = displayCss === 'entrance' ? classes.entranceVideoStyle : classes.roomVideoStyle
 
   return (

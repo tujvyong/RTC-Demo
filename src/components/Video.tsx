@@ -62,6 +62,15 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100%',
       verticalAlign: 'bottom',
     },
+    mediaStats: {
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      background:
+        'linear-gradient(bottom,rgba(0,0,0,0.7) 0,rgba(0,0,0,0.3) 50%,rgba(0,0,0,0) 100%)',
+      paddingRight: theme.spacing(1),
+      zIndex: 5,
+    }
   })
 )
 

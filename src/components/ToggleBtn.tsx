@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import { Grid, Tooltip } from '@material-ui/core'
+import { Tooltip } from '@material-ui/core'
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import VideocamOffOutlinedIcon from '@material-ui/icons/VideocamOffOutlined';

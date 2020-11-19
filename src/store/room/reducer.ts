@@ -1,16 +1,10 @@
-import { STREAM_SET } from "../media/types"
 import {
-  SET_ROOMNAME,
-  SET_RE_ENTER,
-  SET_FINISHED,
   JOINED_ROOM,
-  JOINED_CHAT_ROOM,
   ADD_STREAM,
   LOAD,
   REMOVE_STREAM,
   CLEAN_UP_ROOM,
   RoomActionTypes,
-  SET_ROOM_STAT,
   RoomStore,
 } from "./types"
 
@@ -23,20 +17,10 @@ const initialState: RoomStore = {
   id: null,
   useH264: false,
   streams: new Map(),
-  // castRequestCount: new Map(),
-  // stats: new Map(),
 }
 
 export default function roomReducer(state = initialState, action: RoomActionTypes) {
   switch (action.type) {
-    // case SET_RE_ENTER: {
-    //   const toggle = action.payload
-    //   return { ...state, isReEnter: toggle }
-    // }
-    // case SET_FINISHED: {
-    //   const toggle = action.payload
-    //   return { ...state, isFinished: toggle, isJoined: false }
-    // }
     case JOINED_ROOM: {
       const currentRoom = action.payload
       return { ...state, currentRoom: currentRoom, isJoined: true }
@@ -59,11 +43,6 @@ export default function roomReducer(state = initialState, action: RoomActionType
       // state.stats.delete(peerId)
       return state
     }
-    // case SET_ROOM_STAT: {
-    //   const { src, stat } = action.payload
-    //   state.stats.set(src, stat)
-    //   return state
-    // }
     case CLEAN_UP_ROOM: {
       state.streams.forEach((stream) =>
         stream.getTracks().forEach((track) => track.stop())

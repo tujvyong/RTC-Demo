@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import { Container, Typography, Button } from '@material-ui/core'
 import { RootStore } from '../store';

@@ -12,9 +12,7 @@ import {
   addStream,
   removeStream,
   cleanUpRoom,
-  // setRoomStat,
 } from "../store/room/actions";
-// import { RoomStat } from "../store/room/types"
 import { useParams } from 'react-router-dom';
 import Entrance from '../pages/Entrance';
 import Room from "../pages/Room";
@@ -52,33 +50,10 @@ const RTCsettings: React.FC<Props> = () => {
     })
     currentRoom.on('stream', (stream: RoomStream) => {
       dispatch(addStream(stream))
-      // currentRoom.send({
-      //   type: 'stat',
-      //   payload: { ...media.stat }
-      // })
     })
     currentRoom.on('peerLeave', (peerId: string) => {
-      // const stat = room.stats.get(peerId)
-      // if (stat) {
-      //   console.log(stat.displayName)
-      // }
       dispatch(removeStream(peerId))
     })
-    // currentRoom.on('data', ({ src, data }) => {
-    //   const { type, payload } = data
-    //   switch (type) {
-    //     case 'stat':
-    //       const stat = payload as RoomStat
-    //       if (!room.stats.get(src)) {
-
-    //       }
-    //       dispatch(setRoomStat(src, stat))
-    //       break;
-    //     default:
-    //       console.log("through default ...")
-    //       break;
-    //   }
-    // })
     currentRoom.once('close', () => {
       try {
         currentRoom.removeAllListeners();

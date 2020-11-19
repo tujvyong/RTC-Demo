@@ -5,8 +5,6 @@ import {
   JOINED_ROOM,
   LOAD,
   REMOVE_STREAM,
-  // RoomStat,
-  SET_ROOM_STAT
 } from "./types";
 
 
@@ -29,11 +27,6 @@ export const removeStream = (peerId: string) => ({
   type: REMOVE_STREAM,
   payload: peerId
 })
-
-// export const setRoomStat = (src: string, stat: RoomStat) => ({
-//   type: SET_ROOM_STAT,
-//   payload: { src, stat }
-// })
 
 export const cleanUpRoom = () => ({
   type: CLEAN_UP_ROOM

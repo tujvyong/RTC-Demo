@@ -10,7 +10,6 @@ import LocalStream from '../components/LocalStream'
 import RemoteStream from '../components/RemoteStream'
 import Settings from '../components/Settings'
 import ToggleBtn from "../components/ToggleBtn";
-import { useHistory } from 'react-router-dom';
 
 
 interface Props {
@@ -34,21 +33,17 @@ function debounce(fn: () => void, ms: number) {
 const Room: React.FC<Props> = ({
   configs,
   setConfigs,
-  // handleBeforeunload,
-  // exitRoom,
 }) => {
   const classes = useStyles()
-  let history = useHistory()
   const [windowSize, setWindowSize] = useState({
     // width: window.innerWidth,
     height: window.innerHeight
   })
   const [touch, setTouch] = useState(true)
-  const [isFull, setIsFull] = useState(false)
   const { room, media } = useSelector((state: RootStore) => state)
   const dispatch = useDispatch()
 
-  const videoHeight = isFull || !touch ? `${windowSize.height}px` : `${windowSize.height - 88}px`
+  const videoHeight = !touch ? `${windowSize.height}px` : `${windowSize.height - 88}px`
 
   const toggleVideo = () => {
     setConfigs({ ...configs, video: !configs.video })
@@ -58,10 +53,6 @@ const Room: React.FC<Props> = ({
   const toggleMic = () => {
     setConfigs({ ...configs, mic: !configs.mic })
     dispatch(toggleMuted('audio'))
-  }
-
-  const toggleFullscreen = () => {
-    setIsFull(!isFull)
   }
 
   const touchInOut = () => {
@@ -91,13 +82,12 @@ const Room: React.FC<Props> = ({
 
       <div className={classes.roomContent} style={{ height: videoHeight }} onTouchEnd={touchInOut} >
         <RemoteStream
-          streams={room.streams}
           displayCss={classes.remoteVideoStyle}
         />
       </div>
 
       <Fade in={touch}>
-        <Grid container spacing={1} justify='center' className={clsx(classes.roomConfigs, { [classes.roomConfigsFull]: isFull || !touch })} >
+        <Grid container spacing={1} justify='center' className={clsx(classes.roomConfigs, { [classes.roomConfigsFull]: !touch })} >
           <Grid item >
             <ToggleBtn
               title="カメラ オン/オフ"

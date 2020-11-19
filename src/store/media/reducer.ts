@@ -2,7 +2,6 @@ import {
   STREAM_SET,
   SET_VIDEO_TRACK,
   SET_AUDIO_TRACK,
-  DELETE_VIDEO_TRACK,
   RELEASE_VIDEO,
   RELEASE_AUDIO,
   SET_VIDEO_DEVICES,
@@ -49,14 +48,6 @@ export default function mediaReducer(state = initialState, action: MediaActionTy
       const { track, deviceId } = action.payload
       return { ...state, audioTrack: track, audioDeviceId: deviceId }
     }
-    // case DELETE_VIDEO_TRACK: {
-    //   // ビデオの機能をなくしたいときに使う
-    //   if (state.videoTrack instanceof MediaStreamTrack) {
-    //     state.videoTrack.stop()
-    //   }
-    //   // stateの変更をwatchしていないといけない?
-    //   return { ...state, videoTrack: null, videoType: null, videoDeviceId: null }
-    // }
     case RELEASE_AUDIO: {
       // デバイスを変更するときに使う
       if (state.audioTrack instanceof MediaStreamTrack) {
