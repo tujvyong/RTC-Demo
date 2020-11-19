@@ -53,6 +53,11 @@ interface Load {
   payload: Peer
 }
 
+interface JoinedRoom {
+  type: typeof JOINED_ROOM
+  payload: SfuRoom
+}
+
 interface AddStream {
   type: typeof ADD_STREAM
   payload: RoomStream
@@ -68,4 +73,4 @@ interface RemoveStream {
 //   payload: { src: string, stat: RoomStat }
 // }
 
-export type RoomActionTypes = Load | AddStream | RemoveStream
+export type RoomActionTypes = Load | JoinedRoom | AddStream | RemoveStream

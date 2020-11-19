@@ -36,10 +36,10 @@ export default function roomReducer(state = initialState, action: RoomActionType
     //   const toggle = action.payload
     //   return { ...state, isFinished: toggle, isJoined: false }
     // }
-    // case JOINED_ROOM: {
-    //   const currentRoom = action.payload
-    //   return { ...state, currentRoom: currentRoom, remoteId: currentRoom.remoteId, isJoined: true }
-    // }
+    case JOINED_ROOM: {
+      const currentRoom = action.payload
+      return { ...state, currentRoom: currentRoom, isJoined: true }
+    }
     case ADD_STREAM: {
       const stream = action.payload
       return { ...state, streams: state.streams.set(stream.peerId, stream) }

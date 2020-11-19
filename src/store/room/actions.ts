@@ -1,6 +1,7 @@
-import Peer, { RoomStream } from "skyway-js";
+import Peer, { RoomStream, SfuRoom } from "skyway-js";
 import {
   ADD_STREAM,
+  JOINED_ROOM,
   LOAD,
   REMOVE_STREAM,
   // RoomStat,
@@ -11,6 +12,11 @@ import {
 export const load = (peer: Peer) => ({
   type: LOAD,
   payload: peer
+})
+
+export const joinedRoom = (room: SfuRoom) => ({
+  type: JOINED_ROOM,
+  payload: room
 })
 
 export const addStream = (stream: RoomStream) => ({

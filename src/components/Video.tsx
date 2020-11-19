@@ -36,17 +36,15 @@ const Video: React.FC<Props> = ({ stream, isReverse = false, isVideoOnly = false
 
   return (
     <>
-      {isNoVideo ?
-        null
-        : (
-          <video
-            className={classes.videoStyle}
-            style={{ transform: 'scaleX(-1)' }}
-            playsInline
-            muted={true}
-            ref={videoRef}
-          />
-        )}
+      {isNoVideo ? null : (
+        <video
+          className={classes.videoStyle}
+          style={{ transform: 'scaleX(-1)' }}
+          playsInline
+          muted={true}
+          ref={videoRef}
+        />
+      )}
       {isVideoOnly || isNoAudio ? null : (
         <audio style={{ display: 'none' }} ref={audioRef} />
       )}

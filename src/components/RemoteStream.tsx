@@ -20,11 +20,14 @@ const RemoteStream: React.FC<Props> = ({ streams, displayCss }) => {
   //   }
   // }, [remoteStream])
 
+  let videos = null
+  streams.forEach((stream, peerId) => {
+    videos = <Video stream={stream} />
+  })
+
   return (
     <div className={displayCss}>
-      {streams.forEach((stream, peerId) => (
-        <Video stream={stream} />
-      ))}
+      {videos}
       {/* <div className={classes.username}><Typography variant="h6" component="p">{nameOfPeer}</Typography></div> */}
     </div>
   )
