@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import { Typography, Button } from '@material-ui/core'
+import { Container, Typography, Button } from '@material-ui/core'
 import { RootStore } from '../store';
 import { useSelector } from 'react-redux';
 
@@ -15,15 +15,17 @@ const ErrorDetail: React.FC<Props> = ({ children }) => {
   let content;
   if (ui.error !== null) {
     content = (
-      <>
-        <Typography gutterBottom variant="body1" color="error">おっと、何か問題があるようです</Typography>
-        <Typography paragraph>{ui.error.message || ui.error.name}</Typography>
-        <Typography gutterBottom variant="h6">ホームに戻って、再度お試しください</Typography>
-        <Button href="/" color="secondary" variant="outlined" style={{ margin: '1em' }}>ホームに戻る</Button>
+      <Container>
+        <div style={{ textAlign: 'center' }}>
+          <Typography color="textPrimary" gutterBottom variant="body1">おっと、何か問題があるようです</Typography>
+          <Typography color="textPrimary" paragraph>{ui.error.message || ui.error.name}</Typography>
+          <Typography color="textPrimary" gutterBottom variant="h6">ホームに戻って、再度お試しください</Typography>
+          <Button href="/" color="secondary" variant="outlined" style={{ margin: '1em' }}>ホームに戻る</Button>
+        </div>
         <pre className={classes.detailStyle}>
           {ui.error.stack || "Stack trace is not available."}
         </pre>
-      </>
+      </Container>
     )
   } else {
     content = children
