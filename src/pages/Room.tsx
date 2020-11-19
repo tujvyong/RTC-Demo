@@ -10,7 +10,6 @@ import LocalStream from '../components/LocalStream'
 import RemoteStream from '../components/RemoteStream'
 import Settings from '../components/Settings'
 import ToggleBtn from "../components/ToggleBtn";
-// import Fullscreen from 'react-full-screen'
 
 
 interface Props {
@@ -18,16 +17,18 @@ interface Props {
   setConfigs: React.Dispatch<React.SetStateAction<MediaConfig>>
 }
 
-// function debounce(fn: () => void, ms: number) {
-//   let timer: NodeJS.Timeout
-//   return () => {
-//     clearTimeout(timer)
-//     timer = setTimeout(() => {
-//       timer = null
-//       fn.apply(this, arguments)
-//     }, ms)
-//   };
-// }
+function debounce(fn: () => void, ms: number) {
+  let timer: NodeJS.Timeout | null
+  return () => {
+    if (timer) {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        timer = null
+        fn()
+      }, ms)
+    }
+  };
+}
 
 const Room: React.FC<Props> = ({
   configs,
@@ -45,8 +46,6 @@ const Room: React.FC<Props> = ({
   const { room, media } = useSelector((state: RootStore) => state)
   const dispatch = useDispatch()
 
-  // const cam = configs.video ? <VideocamIcon /> : <VideocamOffOutlinedIcon />
-  // const mic = configs.mic ? <MicIcon /> : <MicOffIcon />
   const videoHeight = isFull || !touch ? `${windowSize.height}px` : `${windowSize.height - 88}px`
 
   const toggleVideo = () => {
@@ -67,28 +66,20 @@ const Room: React.FC<Props> = ({
     setTouch(!touch)
   }
 
-  // useEffect(() => {
-  //   const handleResize = debounce(function resizer() {
-  //     setWindowSize({ height: window.innerHeight })
-  //   }, 1000)
-  //   window.addEventListener('resize', handleResize)
-  //   return () => {
-  //     window.addEventListener('resize', handleResize)
-  //   }
-  // }, [windowSize])
+  useEffect(() => {
+    const handleResize = debounce(function resizer() {
+      setWindowSize({ height: window.innerHeight })
+    }, 1000)
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.addEventListener('resize', handleResize)
+    }
+  }, [windowSize])
 
   return (
     <div className={classes.roomRoot}>
-      <LocalStream displayCss={classes.localVideoStyle} />
-      <ToggleBtn
-        title="設定"
-        selected={true}
-        icon={"SettingsIcon"}
-        event="click"
-        fn={() => setConfigs({ ...configs, settings: true })}
-      />
+      <LocalStream displayCss="room" />
 
-      {/* <Fullscreen enabled={isFull} onChange={(e) => setIsFull(e)} > */}
       <div className={classes.roomContent} style={{ height: videoHeight }} onTouchEnd={touchInOut} >
         <RemoteStream
           streams={room.streams}
@@ -118,11 +109,11 @@ const Room: React.FC<Props> = ({
           </Grid>
           <Grid item>
             <ToggleBtn
-              title="全画面表示"
+              title="設定"
               selected={true}
-              icon={isFull ? "FullscreenExitIcon" : "FullscreenIcon"}
-            // event="click"
-            // fn={toggleFullscreen)}
+              icon={"SettingsIcon"}
+              event="click"
+              fn={() => setConfigs({ ...configs, settings: true })}
             />
           </Grid>
           <Grid item>
@@ -136,7 +127,6 @@ const Room: React.FC<Props> = ({
           </Grid>
         </Grid>
       </Fade>
-      {/* </Fullscreen> */}
 
       <Settings media={media} configs={configs} setConfigs={setConfigs} />
     </div>
@@ -169,17 +159,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       height: '100%',
       // backgroundColor: '#212225',
-    },
-    localVideoStyle: {
-      width: '25%',
-      borderRadius: theme.shape.borderRadius,
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      zIndex: 2,
-      [theme.breakpoints.up('md')]: {
-        width: '20%',
-      },
     },
   })
 )

@@ -8,6 +8,7 @@ import { RootStore } from "../store";
 import { MediaConfig } from "../utils/types";
 import {
   load,
+  joinedRoom,
   addStream,
   removeStream,
   // setRoomStat,
@@ -15,6 +16,7 @@ import {
 // import { RoomStat } from "../store/room/types"
 import { useParams } from 'react-router-dom';
 import Entrance from '../pages/Entrance';
+import Room from "../pages/Room";
 import Bootstrap from './Bootstrap';
 import Loading from "../components/Loading";
 
@@ -31,7 +33,7 @@ const RTCsettings: React.FC<Props> = () => {
     mic: true,
     settings: false
   })
-  const { room, media, ui } = useSelector((state: RootStore) => state)
+  const { room, media } = useSelector((state: RootStore) => state)
 
   const onCallRoom = useCallback(() => {
     if (room.peer === null) {
@@ -42,9 +44,11 @@ const RTCsettings: React.FC<Props> = () => {
       mode: 'sfu',
       stream: media.stream
     })
-    // setMediaConnection(mediaConnection)
 
     // receive behavior
+    currentRoom.on('open', () => {
+      dispatch(joinedRoom(currentRoom))
+    })
     currentRoom.on('stream', (stream: RoomStream) => {
       dispatch(addStream(stream))
       // currentRoom.send({
@@ -74,7 +78,7 @@ const RTCsettings: React.FC<Props> = () => {
     //       break;
     //   }
     // })
-  }, [dispatch])
+  }, [dispatch, room, media, roomName])
 
   const getPeer = useCallback(async () => {
     const peer = await initPeer().catch(err => {
@@ -96,7 +100,7 @@ const RTCsettings: React.FC<Props> = () => {
     content = (<Loading />)
   } else {
     if (room.isJoined) {
-      // content = (<Room />)
+      content = (<Room configs={configs} setConfigs={setConfigs} />)
     } else {
       content = (
         <Entrance

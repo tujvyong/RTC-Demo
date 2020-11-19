@@ -17,9 +17,10 @@ const LocalStream: React.FC<Props> = ({ displayCss }) => {
   //     setIsActive(stream.getVideoTracks()[0].enabled)
   //   }
   // }, [stream])
+  let style = displayCss === 'entrance' ? classes.entranceVideoStyle : classes.roomVideoStyle
 
   return (
-    <div className={classes.entranceVideo}>
+    <div className={style}>
       <Video
         stream={stream}
         isReverse={videoType === 'camera'}
@@ -33,11 +34,22 @@ export default LocalStream
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    entranceVideo: {
+    entranceVideoStyle: {
       position: 'relative',
       width: '100%',
       height: '100%',
       borderRadius: theme.shape.borderRadius,
+    },
+    roomVideoStyle: {
+      width: '25%',
+      borderRadius: theme.shape.borderRadius,
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      zIndex: 2,
+      [theme.breakpoints.up('md')]: {
+        width: '20%',
+      },
     },
   })
 )
